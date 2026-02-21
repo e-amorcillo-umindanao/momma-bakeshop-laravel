@@ -135,7 +135,7 @@
             <div class="mt-8 bg-white border border-stone-200 rounded-2xl shadow-sm overflow-hidden">
                 <div class="px-6 py-5 border-b border-stone-100 bg-stone-50/50 flex justify-between items-center">
                     <h3 class="text-base font-semibold text-stone-800">Recent System Activity</h3>
-                    <a href="<?php echo e(route('reports.inventory')); ?>"
+                    <a href="<?php echo e(route('reports.sales')); ?>"
                         class="text-sm font-medium text-orange-600 hover:text-orange-700">View All Logs &rarr;</a>
                 </div>
                 <div class="max-h-96 overflow-y-auto divide-y divide-stone-100">
@@ -144,13 +144,13 @@
                             <div class="px-6 py-3 flex items-start gap-3 hover:bg-stone-50/50 transition-colors">
                                 <div class="flex-shrink-0 mt-0.5">
                                     <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold
-                                                    <?php if($audit->Action === 'INSERT'): ?> bg-emerald-50 text-emerald-600 border border-emerald-200
-                                                    <?php elseif($audit->Action === 'UPDATE'): ?> bg-sky-50 text-sky-600 border border-sky-200
-                                                    <?php elseif($audit->Action === 'DELETE'): ?> bg-rose-50 text-rose-600 border border-rose-200
-                                                    <?php elseif($audit->Action === 'LOGIN'): ?> bg-indigo-50 text-indigo-600 border border-indigo-200
-                                                    <?php elseif($audit->Action === 'LOGOUT'): ?> bg-amber-50 text-amber-600 border border-amber-200
-                                                    <?php else: ?> bg-stone-50 text-stone-600 border border-stone-200
-                                                    <?php endif; ?>">
+                                                                    <?php if($audit->Action === 'INSERT'): ?> bg-emerald-50 text-emerald-600 border border-emerald-200
+                                                                    <?php elseif($audit->Action === 'UPDATE'): ?> bg-sky-50 text-sky-600 border border-sky-200
+                                                                    <?php elseif($audit->Action === 'DELETE'): ?> bg-rose-50 text-rose-600 border border-rose-200
+                                                                    <?php elseif($audit->Action === 'LOGIN'): ?> bg-indigo-50 text-indigo-600 border border-indigo-200
+                                                                    <?php elseif($audit->Action === 'LOGOUT'): ?> bg-amber-50 text-amber-600 border border-amber-200
+                                                                    <?php else: ?> bg-stone-50 text-stone-600 border border-stone-200
+                                                                    <?php endif; ?>">
                                         <?php echo e(strtoupper(substr($audit->Action, 0, 1))); ?>
 
                                     </div>
@@ -164,7 +164,9 @@
                                         <span class="font-medium text-stone-700"><?php echo e($audit->TableEdited); ?></span>
                                     </p>
                                     <p class="text-xs text-stone-400 mt-0.5">
-                                        <?php echo e(\Carbon\Carbon::parse($audit->DateAdded)->diffForHumans()); ?></p>
+                                        <?php echo e(\Carbon\Carbon::parse($audit->DateAdded)->diffForHumans()); ?>
+
+                                    </p>
                                 </div>
                             </div>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

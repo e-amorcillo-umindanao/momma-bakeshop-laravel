@@ -1,42 +1,96 @@
 @extends('layouts.app')
 
 @section('content')
-    <h2>Create New User</h2>
-    
-    @if ($errors->any())
-        <div style="color: red;">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+    <div class="max-w-2xl mx-auto mt-8">
+        <!-- Header -->
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Create New User</h2>
+            <p class="text-sm text-slate-500 mt-1">Register a new employee and assign their system access role.</p>
         </div>
-    @endif
 
-    <form action="{{ route('users.store') }}" method="POST">
-        @csrf
-        <div style="margin-bottom: 15px;">
-            <label>Full Name:</label><br>
-            <input type="text" name="FullName" value="{{ old('FullName') }}" required>
+        <!-- Form Card -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            @if ($errors->any())
+                <div class="bg-red-50 border-b border-red-100 p-4">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0">
+                            <svg class="h-5 w-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-sm font-medium text-red-800">There were errors with your submission:</h3>
+                            <ul class="mt-2 text-sm text-red-700 list-disc list-inside">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            <form action="{{ route('users.store') }}" method="POST" class="p-6 md:p-8">
+                @csrf
+
+                <div class="space-y-6">
+                    <!-- Full Name -->
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Full Name</label>
+                        <input type="text" name="FullName" value="{{ old('FullName') }}" required
+                            class="block w-full rounded-xl border-slate-300 py-3 px-4 text-sm focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 border transition-colors shadow-sm text-slate-700"
+                            placeholder="e.g. John Doe">
+                    </div>
+
+                    <!-- Username -->
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Username</label>
+                        <input type="text" name="Username" value="{{ old('Username') }}" required
+                            class="block w-full rounded-xl border-slate-300 py-3 px-4 text-sm focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 border transition-colors shadow-sm text-slate-700"
+                            placeholder="jdoe">
+                    </div>
+
+                    <!-- Password -->
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Password</label>
+                        <input type="password" name="Password" required autocomplete="new-password"
+                            class="block w-full rounded-xl border-slate-300 py-3 px-4 text-sm focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 border transition-colors shadow-sm text-slate-700"
+                            placeholder="••••••••">
+                    </div>
+
+                    <!-- Role Selection -->
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">System Role</label>
+                        <select name="Role" required
+                            class="block w-full rounded-xl border-slate-300 py-3 px-4 text-sm focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 border transition-colors shadow-sm text-slate-700">
+                            <option value="">Select a role...</option>
+                            <option value="Cashier" {{ old('Role') == 'Cashier' ? 'selected' : '' }}>Cashier (POS Access)
+                            </option>
+                            <option value="Inventory Clerk" {{ old('Role') == 'Inventory Clerk' ? 'selected' : '' }}>Inventory
+                                Clerk (Warehouse Access)</option>
+                            <option value="Owner/Admin" {{ old('Role') == 'Owner/Admin' ? 'selected' : '' }}>Owner/Admin (Full
+                                Access)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Footer Actions -->
+                <div class="mt-8 pt-6 border-t border-slate-100 flex items-center justify-end gap-4">
+                    <a href="{{ route('users.index') }}"
+                        class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-900 bg-white border border-slate-200 rounded-xl shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-200 transition-all">
+                        Cancel
+                    </a>
+                    <button type="submit"
+                        class="px-5 py-2.5 text-sm font-bold text-white bg-indigo-600 border border-transparent rounded-xl shadow-sm hover:bg-indigo-500 active:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                        </svg>
+                        Create User
+                    </button>
+                </div>
+            </form>
         </div>
-        <div style="margin-bottom: 15px;">
-            <label>Username:</label><br>
-            <input type="text" name="Username" value="{{ old('Username') }}" required>
-        </div>
-        <div style="margin-bottom: 15px;">
-            <label>Password:</label><br>
-            <input type="password" name="Password" required>
-        </div>
-        <div style="margin-bottom: 15px;">
-            <label>Role:</label><br>
-            <select name="Role" required>
-                <option value="">Select Role</option>
-                <option value="Cashier" {{ old('Role') == 'Cashier' ? 'selected' : '' }}>Cashier</option>
-                <option value="Inventory Clerk" {{ old('Role') == 'Inventory Clerk' ? 'selected' : '' }}>Inventory Clerk</option>
-                <option value="Owner/Admin" {{ old('Role') == 'Owner/Admin' ? 'selected' : '' }}>Owner/Admin</option>
-            </select>
-        </div>
-        <button type="submit">Create User</button>
-        <a href="{{ route('users.index') }}">Cancel</a>
-    </form>
+    </div>
 @endsection

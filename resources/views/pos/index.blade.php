@@ -38,13 +38,11 @@
                             <button @click="addToCart(product)"
                                 class="relative bg-white border border-slate-200 rounded-xl p-4 text-left shadow-sm hover:shadow-md hover:border-indigo-300 transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 group overflow-hidden flex flex-col h-full transform hover:-translate-y-0.5">
                                 <div
-                                    class="w-full aspect-video bg-slate-100 rounded-lg mb-3 flex items-center justify-center text-slate-300 group-hover:bg-indigo-50 transition-colors">
-                                    <svg class="w-8 h-8 group-hover:text-indigo-300" fill="none" viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                        </path>
-                                    </svg>
+                                    class="w-full aspect-video bg-slate-100 rounded-lg mb-3 flex items-center justify-center overflow-hidden border border-slate-100 group-hover:border-indigo-100 transition-colors">
+                                    <img :src="'/images/products/' + product.ID + '.jpg'"
+                                        :alt="product.ProductName"
+                                        class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+                                        onerror="this.src='/images/products/default.svg'; this.onerror=null;">
                                 </div>
                                 <h3 class="text-sm font-bold text-slate-800 leading-tight mb-1" x-text="product.ProductName">
                                 </h3>

@@ -51,10 +51,13 @@
             </div>
 
             <!-- Inventory Alerts Widget -->
+            @php
+                $lowStockCount = $lowStockProducts instanceof \Illuminate\Support\Collection ? $lowStockProducts->count() : (int) $lowStockProducts;
+            @endphp
             <div
-                class="bg-gradient-to-br from-white to-rose-50/30 rounded-2xl p-6 shadow-sm border {{ $lowStockProducts > 0 ? 'border-rose-200' : 'border-stone-200' }} relative overflow-hidden flex flex-col justify-between">
+                class="bg-gradient-to-br from-white to-rose-50/30 rounded-2xl p-6 shadow-sm border {{ $lowStockCount > 0 ? 'border-rose-200' : 'border-stone-200' }} relative overflow-hidden flex flex-col justify-between">
                 <div class="absolute top-0 right-0 p-4 opacity-10">
-                    <svg class="w-32 h-32 {{ $lowStockProducts > 0 ? 'text-rose-600' : 'text-stone-400' }}" fill="none"
+                    <svg class="w-32 h-32 {{ $lowStockCount > 0 ? 'text-rose-600' : 'text-stone-400' }}" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
                             d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
@@ -65,7 +68,7 @@
                 <div class="relative z-10">
                     <div class="flex items-center gap-3 mb-2">
                         <div
-                            class="p-2 {{ $lowStockProducts > 0 ? 'bg-rose-100 text-rose-600' : 'bg-stone-100 text-stone-500' }} rounded-lg">
+                            class="p-2 {{ $lowStockCount > 0 ? 'bg-rose-100 text-rose-600' : 'bg-stone-100 text-stone-500' }} rounded-lg">
                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
@@ -75,14 +78,14 @@
                     </div>
                     <div class="flex items-baseline gap-2">
                         <span
-                            class="text-4xl font-black tracking-tighter {{ $lowStockProducts > 0 ? 'text-rose-600' : 'text-stone-700' }}">{{ $lowStockProducts }}</span>
+                            class="text-4xl font-black tracking-tighter {{ $lowStockCount > 0 ? 'text-rose-600' : 'text-stone-700' }}">{{ $lowStockCount }}</span>
                         <span class="text-sm font-medium text-stone-500">products require attention</span>
                     </div>
                 </div>
 
                 <div class="relative z-10 mt-8">
                     <a href="{{ route('reports.inventory') }}"
-                        class="inline-flex w-full justify-center items-center px-4 py-2.5 text-sm font-semibold {{ $lowStockProducts > 0 ? 'text-rose-700 bg-rose-100 border-rose-200 hover:bg-rose-200' : 'text-stone-700 bg-white border-stone-300 hover:bg-stone-50' }} border rounded-xl shadow-sm transition-all">
+                        class="inline-flex w-full justify-center items-center px-4 py-2.5 text-sm font-semibold {{ $lowStockCount > 0 ? 'text-rose-700 bg-rose-100 border-rose-200 hover:bg-rose-200' : 'text-stone-700 bg-white border-stone-300 hover:bg-stone-50' }} border rounded-xl shadow-sm transition-all">
                         View Activity Log & Stock Details
                         <svg class="ml-2 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>

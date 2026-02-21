@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-slate-50">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-stone-50">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,21 +21,21 @@
         [x-cloak] { display: none !important; }
     </style>
 </head>
-<body class="h-full antialiased font-sans text-slate-800" x-data="{ sidebarOpen: false }">
-    <div class="flex h-screen overflow-hidden bg-slate-50">
+<body class="h-full antialiased font-sans text-stone-800" x-data="{ sidebarOpen: false }">
+    <div class="flex h-screen overflow-hidden bg-stone-50">
         
         <!-- Sidebar Component -->
         @include('components.sidebar')
 
         <!-- Main Content Wrapper -->
-        <div class="flex flex-col flex-1 w-full overflow-hidden">
+        <div class="flex flex-col flex-1 w-full overflow-hidden md:ml-20">
             
             <!-- Global Header -->
-            <header class="flex items-center justify-between px-6 py-4 bg-white border-b border-slate-200 shadow-sm z-30 shrink-0">
+            <header class="flex items-center justify-between px-6 py-4 bg-white border-b border-stone-200 shadow-sm z-30 shrink-0">
                 
                 <div class="flex items-center gap-4">
                     <!-- Sidebar Toggle Button (Mobile Only) -->
-                    <button @click="sidebarOpen = !sidebarOpen" class="text-slate-500 hover:text-slate-700 focus:outline-none transition-colors md:hidden">
+                    <button @click="sidebarOpen = !sidebarOpen" class="text-stone-500 hover:text-stone-700 focus:outline-none transition-colors md:hidden">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
@@ -44,12 +44,12 @@
                     <!-- Global Search -->
                     <div class="relative hidden sm:block">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            <svg class="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <svg class="w-4 h-4 text-stone-400" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                             </svg>
                         </span>
                         <input type="text" 
-                               class="w-72 pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all placeholder-slate-400" 
+                               class="w-72 pl-10 pr-4 py-2 bg-stone-50 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all placeholder-stone-400" 
                                placeholder="Search IMS Data (IMEI, Users)...">
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                         $lowStockProducts = \App\Models\Product::where('Quantity', '<=', 10)->get();
                     @endphp
                     <div class="relative" x-data="{ notifOpen: false }" @click.away="notifOpen = false">
-                        <button @click="notifOpen = !notifOpen" class="relative p-2 text-slate-400 hover:text-slate-600 transition-colors focus:outline-none">
+                        <button @click="notifOpen = !notifOpen" class="relative p-2 text-stone-400 hover:text-stone-600 transition-colors focus:outline-none">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
                             </svg>
@@ -84,10 +84,10 @@
                              x-transition:leave-start="transform opacity-100 scale-100"
                              x-transition:leave-end="transform opacity-0 scale-95"
                              x-cloak 
-                             class="absolute right-0 mt-3 w-80 bg-white rounded-lg shadow-lg border border-slate-100 z-50 overflow-hidden ring-1 ring-black ring-opacity-5">
+                             class="absolute right-0 mt-3 w-80 bg-white rounded-lg shadow-lg border border-stone-100 z-50 overflow-hidden ring-1 ring-black ring-opacity-5">
                             
-                            <div class="px-4 py-3 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
-                                <h3 class="text-sm font-bold text-slate-800">Notifications</h3>
+                            <div class="px-4 py-3 border-b border-stone-100 bg-stone-50 flex items-center justify-between">
+                                <h3 class="text-sm font-bold text-stone-800">Notifications</h3>
                                 @if($lowStockProducts->count() > 0)
                                 <span class="bg-red-100 text-red-700 text-xs font-bold px-2 py-0.5 rounded-full">{{ $lowStockProducts->count() }} new</span>
                                 @endif
@@ -95,9 +95,9 @@
                             
                             <div class="max-h-80 overflow-y-auto">
                                 @if($lowStockProducts->count() > 0)
-                                    <div class="divide-y divide-slate-100">
+                                    <div class="divide-y divide-stone-100">
                                         @foreach($lowStockProducts as $product)
-                                        <a href="{{ route('inventory.index') }}" class="block px-4 py-3 hover:bg-slate-50 transition-colors group">
+                                        <a href="{{ route('inventory.index') }}" class="block px-4 py-3 hover:bg-stone-50 transition-colors group">
                                             <div class="flex items-start gap-3">
                                                 <div class="flex-shrink-0 mt-0.5">
                                                     <div class="w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center border border-amber-200">
@@ -107,9 +107,9 @@
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <p class="text-sm font-medium text-slate-800 group-hover:text-amber-700 transition-colors">Low Stock Alert</p>
-                                                    <p class="text-xs text-slate-500 mt-0.5"><span class="font-semibold text-slate-700">{{ $product->ProductName }}</span> is running low ({{ $product->Quantity }} remaining).</p>
-                                                    <p class="text-[10px] text-slate-400 mt-1 uppercase tracking-wider">{{ \Carbon\Carbon::now()->diffForHumans() }}</p>
+                                                    <p class="text-sm font-medium text-stone-800 group-hover:text-amber-700 transition-colors">Low Stock Alert</p>
+                                                    <p class="text-xs text-stone-500 mt-0.5"><span class="font-semibold text-stone-700">{{ $product->ProductName }}</span> is running low ({{ $product->Quantity }} remaining).</p>
+                                                    <p class="text-[10px] text-stone-400 mt-1 uppercase tracking-wider">{{ \Carbon\Carbon::now()->diffForHumans() }}</p>
                                                 </div>
                                             </div>
                                         </a>
@@ -117,36 +117,36 @@
                                     </div>
                                 @else
                                     <div class="px-4 py-8 text-center bg-white flex flex-col items-center justify-center">
-                                        <div class="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center mb-3">
-                                            <svg class="w-6 h-6 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <div class="w-12 h-12 rounded-full bg-stone-50 flex items-center justify-center mb-3">
+                                            <svg class="w-6 h-6 text-stone-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
                                             </svg>
                                         </div>
-                                        <p class="text-sm font-medium text-slate-500">You're all caught up!</p>
-                                        <p class="text-xs text-slate-400 mt-1">No new notifications to show.</p>
+                                        <p class="text-sm font-medium text-stone-500">You're all caught up!</p>
+                                        <p class="text-xs text-stone-400 mt-1">No new notifications to show.</p>
                                     </div>
                                 @endif
                             </div>
                             
                             @if($lowStockProducts->count() > 0)
-                            <div class="px-4 py-2 bg-slate-50 border-t border-slate-100">
-                                <a href="{{ route('inventory.index') }}" class="block text-center text-xs font-semibold text-indigo-600 hover:text-indigo-700 transition-colors">View Inventory</a>
+                            <div class="px-4 py-2 bg-stone-50 border-t border-stone-100">
+                                <a href="{{ route('inventory.index') }}" class="block text-center text-xs font-semibold text-orange-600 hover:text-orange-700 transition-colors">View Inventory</a>
                             </div>
                             @endif
                         </div>
                     </div>
                     
-                    <div class="h-6 w-px bg-slate-200"></div>
+                    <div class="h-6 w-px bg-stone-200"></div>
 
                     <!-- Profile Dropdown -->
                     <div class="relative" x-data="{ profileOpen: false }" @click.away="profileOpen = false">
                         <button @click="profileOpen = !profileOpen" class="flex items-center gap-3 focus:outline-none">
-                            <img class="h-8 w-8 rounded-full object-cover border border-slate-200 shadow-sm" src="https://ui-avatars.com/api/?name={{ urlencode(auth()->check() ? auth()->user()->FullName : 'Admin User') }}&background=4f46e5&color=fff" alt="User Avatar">
+                            <img class="h-8 w-8 rounded-full object-cover border border-stone-200 shadow-sm" src="https://ui-avatars.com/api/?name={{ urlencode(auth()->check() ? auth()->user()->FullName : 'Admin User') }}&background=4f46e5&color=fff" alt="User Avatar">
                             <div class="hidden md:flex flex-col text-left">
-                                <span class="text-sm font-semibold text-slate-700 leading-tight">{{ auth()->check() ? auth()->user()->FullName : 'Admin User' }}</span>
-                                <span class="text-xs text-slate-500 font-medium">{{ auth()->check() ? auth()->user()->Role : 'System Admin' }}</span>
+                                <span class="text-sm font-semibold text-stone-700 leading-tight">{{ auth()->check() ? auth()->user()->FullName : 'Admin User' }}</span>
+                                <span class="text-xs text-stone-500 font-medium">{{ auth()->check() ? auth()->user()->Role : 'System Admin' }}</span>
                             </div>
-                            <svg class="w-4 h-4 text-slate-400 transition-transform duration-200" :class="profileOpen ? 'rotate-180':''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 text-stone-400 transition-transform duration-200" :class="profileOpen ? 'rotate-180':''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                             </svg>
                         </button>
@@ -159,14 +159,14 @@
                              x-transition:leave-start="transform opacity-100 scale-100"
                              x-transition:leave-end="transform opacity-0 scale-95"
                              x-cloak 
-                             class="absolute right-0 mt-3 w-48 bg-white rounded-lg shadow-lg border border-slate-100 z-50 overflow-hidden ring-1 ring-black ring-opacity-5">
-                            <div class="px-4 py-3 border-b border-slate-100 md:hidden">
-                                <p class="text-sm font-medium text-slate-900 truncate">{{ auth()->check() ? auth()->user()->FullName : 'Admin User' }}</p>
-                                <p class="text-xs text-slate-500 truncate">{{ auth()->check() ? auth()->user()->Role : 'System Admin' }}</p>
+                             class="absolute right-0 mt-3 w-48 bg-white rounded-lg shadow-lg border border-stone-100 z-50 overflow-hidden ring-1 ring-black ring-opacity-5">
+                            <div class="px-4 py-3 border-b border-stone-100 md:hidden">
+                                <p class="text-sm font-medium text-stone-900 truncate">{{ auth()->check() ? auth()->user()->FullName : 'Admin User' }}</p>
+                                <p class="text-xs text-stone-500 truncate">{{ auth()->check() ? auth()->user()->Role : 'System Admin' }}</p>
                             </div>
-                            <a href="{{ route('profile') }}" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 hover:text-indigo-600 transition-colors">Profile Settings</a>
+                            <a href="{{ route('profile') }}" class="block px-4 py-2.5 text-sm text-stone-700 hover:bg-stone-50 hover:text-orange-600 transition-colors">Profile Settings</a>
                             
-                            <div class="border-t border-slate-100"></div>
+                            <div class="border-t border-stone-100"></div>
                             
                             @if(auth()->check())
                             <form action="{{ route('logout') }}" method="POST">
@@ -174,7 +174,7 @@
                                 <button type="submit" class="block w-full text-left px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors">Sign Out</button>
                             </form>
                             @else
-                            <a href="/login" class="block px-4 py-2.5 text-sm font-medium text-indigo-600 hover:bg-slate-50 transition-colors">Sign In</a>
+                            <a href="/login" class="block px-4 py-2.5 text-sm font-medium text-orange-600 hover:bg-stone-50 transition-colors">Sign In</a>
                             @endif
                         </div>
                     </div>
@@ -182,7 +182,7 @@
             </header>
 
             <!-- Main Page Content / Container -->
-            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-slate-50 p-6 sm:p-8">
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-stone-50 p-6 sm:p-8">
                 
                 <!-- Global Alerts / Session Flashes -->
                 @if(session('success'))

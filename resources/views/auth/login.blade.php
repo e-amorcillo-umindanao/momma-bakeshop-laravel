@@ -35,8 +35,8 @@
                     </path>
                 </svg>
             </div>
-            <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Momma's Bakeshop</h1>
-            <p class="text-sm text-slate-500 mt-2 font-medium">Sign in to manage your Point of Sale</p>
+            <h1 class="text-3xl font-bold text-stone-800 tracking-tight">Momma's Bakeshop</h1>
+            <p class="text-sm text-stone-500 mt-2 font-medium">Sign in to manage your Point of Sale</p>
         </div>
 
         <!-- Form Section -->
@@ -59,10 +59,10 @@
 
                 <!-- Username Input -->
                 <div>
-                    <label for="Username" class="block text-sm font-semibold text-slate-700 mb-1.5">Username</label>
+                    <label for="Username" class="block text-sm font-semibold text-stone-700 mb-1.5">Username</label>
                     <div class="relative">
                         <div
-                            class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                            class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
                             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                     d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
@@ -70,7 +70,7 @@
                         </div>
                         <input type="text" name="Username" id="Username" value="{{ old('Username') }}" required
                             autofocus
-                            class="block w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all placeholder-slate-400 text-sm"
+                            class="block w-full pl-11 pr-4 py-3 bg-stone-50 border border-stone-200 rounded-xl text-stone-800 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all placeholder-stone-400 text-sm"
                             placeholder="Enter your username">
                     </div>
                 </div>
@@ -78,11 +78,11 @@
                 <!-- Password Input -->
                 <div>
                     <div class="flex items-center justify-between mb-1.5">
-                        <label for="Password" class="block text-sm font-semibold text-slate-700">Password</label>
+                        <label for="Password" class="block text-sm font-semibold text-stone-700">Password</label>
                     </div>
                     <div class="relative">
                         <div
-                            class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                            class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-stone-400">
                             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                     d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
@@ -90,7 +90,7 @@
                             </svg>
                         </div>
                         <input type="password" name="Password" id="Password" required
-                            class="block w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all placeholder-slate-400 text-sm"
+                            class="block w-full pl-11 pr-4 py-3 bg-stone-50 border border-stone-200 rounded-xl text-stone-800 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all placeholder-stone-400 text-sm"
                             placeholder="••••••••">
                     </div>
                 </div>

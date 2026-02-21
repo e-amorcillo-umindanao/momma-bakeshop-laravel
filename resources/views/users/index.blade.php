@@ -6,12 +6,12 @@
         <!-- Header & Actions -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-                <h1 class="text-2xl font-bold text-slate-900 tracking-tight">User Management</h1>
-                <p class="mt-1 text-sm text-slate-500">Manage system access, roles, and employee accounts.</p>
+                <h1 class="text-2xl font-bold text-stone-900 tracking-tight">User Management</h1>
+                <p class="mt-1 text-sm text-stone-500">Manage system access, roles, and employee accounts.</p>
             </div>
             <div class="flex items-center gap-3">
                 <a href="{{ route('users.create') }}"
-                    class="inline-flex items-center justify-center px-4 py-2.5 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-sm transition-colors">
+                    class="inline-flex items-center justify-center px-4 py-2.5 text-sm font-medium text-white bg-orange-600 border border-transparent rounded-lg hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 shadow-sm transition-colors">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                     </svg>
@@ -21,38 +21,38 @@
         </div>
 
         <!-- Users Data Table -->
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-                <h2 class="text-base font-bold text-slate-800">System Users</h2>
+        <div class="bg-white rounded-2xl shadow-sm border border-stone-200 overflow-hidden">
+            <div class="px-6 py-4 border-b border-stone-100 flex items-center justify-between bg-stone-50/50">
+                <h2 class="text-base font-bold text-stone-800">System Users</h2>
                 <span
-                    class="bg-indigo-100 text-indigo-700 text-xs font-bold px-2.5 py-0.5 rounded-full">{{ $users->count() }}
+                    class="bg-orange-100 text-orange-700 text-xs font-bold px-2.5 py-0.5 rounded-full">{{ $users->count() }}
                     Total</span>
             </div>
 
             <x-table :headers="['User Information', 'System Role', 'Status', 'Actions']" :search="false">
                 @foreach($users as $user)
                     <tr
-                        class="hover:bg-slate-50 transition-colors {{ $user->Status === 'Inactive' ? 'bg-slate-50 opacity-75' : '' }}">
+                        class="hover:bg-stone-50 transition-colors {{ $user->Status === 'Inactive' ? 'bg-stone-50 opacity-75' : '' }}">
 
                         <!-- User Info -->
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center">
                                 <div class="flex-shrink-0 h-10 w-10">
-                                    <img class="h-10 w-10 rounded-full object-cover border border-slate-200"
+                                    <img class="h-10 w-10 rounded-full object-cover border border-stone-200"
                                         src="https://ui-avatars.com/api/?name={{ urlencode($user->FullName) }}&background=e2e8f0&color=475569"
                                         alt="">
                                 </div>
                                 <div class="ml-4">
-                                    <div class="text-sm font-bold text-slate-900">{{ $user->FullName }}</div>
-                                    <div class="text-xs text-slate-500 font-medium">@<span>{{ $user->Username }}</span></div>
+                                    <div class="text-sm font-bold text-stone-900">{{ $user->FullName }}</div>
+                                    <div class="text-xs text-stone-500 font-medium">@<span>{{ $user->Username }}</span></div>
                                 </div>
                             </div>
                         </td>
 
                         <!-- Role -->
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm font-semibold text-slate-700">{{ $user->Role }}</div>
-                            <div class="text-xs text-slate-500">Since
+                            <div class="text-sm font-semibold text-stone-700">{{ $user->Role }}</div>
+                            <div class="text-xs text-stone-500">Since
                                 {{ \Carbon\Carbon::parse($user->DateAdded)->format('M Y') }}</div>
                         </td>
 
@@ -77,7 +77,7 @@
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                             <div class="flex items-center gap-3">
                                 <a href="{{ route('users.edit', $user->ID) }}"
-                                    class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 p-2 rounded-lg transition-colors"
+                                    class="text-orange-600 hover:text-orange-900 bg-orange-50 hover:bg-orange-100 p-2 rounded-lg transition-colors"
                                     title="Edit User">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

@@ -6,12 +6,12 @@
         <!-- Header & Actions -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-                <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Inventory Management</h1>
-                <p class="mt-1 text-sm text-slate-500">Track raw materials and manage finished product stock levels.</p>
+                <h1 class="text-2xl font-bold text-stone-900 tracking-tight">Inventory Management</h1>
+                <p class="mt-1 text-sm text-stone-500">Track raw materials and manage finished product stock levels.</p>
             </div>
             <div class="flex items-center gap-3">
                 <a href="{{ route('inventory.stock_out') }}"
-                    class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-sm transition-colors">
+                    class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-stone-700 bg-white border border-stone-300 rounded-lg hover:bg-stone-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 shadow-sm transition-colors">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4M12 4l-8 8 8 8">
                         </path>
@@ -19,7 +19,7 @@
                     Stock-Out
                 </a>
                 <a href="{{ route('inventory.stock_in') }}"
-                    class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-sm transition-colors">
+                    class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-orange-600 border border-transparent rounded-lg hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 shadow-sm transition-colors">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16M12 4l8 8-8 8">
                         </path>
@@ -71,22 +71,22 @@
             <!-- Raw Materials Section -->
             <div>
                 <div class="mb-4 flex items-center justify-between">
-                    <h2 class="text-lg font-bold text-slate-800">Raw Materials</h2>
+                    <h2 class="text-lg font-bold text-stone-800">Raw Materials</h2>
                     <span
-                        class="bg-slate-100 text-slate-600 text-xs font-bold px-2.5 py-0.5 rounded-full">{{ $rawMaterials->count() }}
+                        class="bg-stone-100 text-stone-600 text-xs font-bold px-2.5 py-0.5 rounded-full">{{ $rawMaterials->count() }}
                         Items</span>
                 </div>
 
                 <x-table :headers="['Ingredient', 'Quantity', 'Status']" :search="false">
                     @foreach($rawMaterials as $item)
-                        <tr class="hover:bg-slate-50 transition-colors">
+                        <tr class="hover:bg-stone-50 transition-colors">
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="font-medium text-slate-900">{{ $item->ItemName }}</div>
-                                <div class="text-xs text-slate-500">Threshold: {{ $item->LowStockThreshold }}</div>
+                                <div class="font-medium text-stone-900">{{ $item->ItemName }}</div>
+                                <div class="text-xs text-stone-500">Threshold: {{ $item->LowStockThreshold }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-semibold text-slate-700">{{ $item->Quantity }} <span
-                                        class="text-xs font-normal text-slate-500">{{ $item->Measurement }}</span></div>
+                                <div class="text-sm font-semibold text-stone-700">{{ $item->Quantity }} <span
+                                        class="text-xs font-normal text-stone-500">{{ $item->Measurement }}</span></div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @if($item->Quantity <= $item->LowStockThreshold)
@@ -109,22 +109,22 @@
             <!-- Finished Goods Section -->
             <div>
                 <div class="mb-4 flex items-center justify-between">
-                    <h2 class="text-lg font-bold text-slate-800">Finished Goods</h2>
+                    <h2 class="text-lg font-bold text-stone-800">Finished Goods</h2>
                     <span
-                        class="bg-slate-100 text-slate-600 text-xs font-bold px-2.5 py-0.5 rounded-full">{{ $finishedGoods->count() }}
+                        class="bg-stone-100 text-stone-600 text-xs font-bold px-2.5 py-0.5 rounded-full">{{ $finishedGoods->count() }}
                         Products</span>
                 </div>
 
                 <x-table :headers="['Product Name', 'Quantity', 'Status']" :search="false">
                     @foreach($finishedGoods as $product)
-                        <tr class="hover:bg-slate-50 transition-colors">
+                        <tr class="hover:bg-stone-50 transition-colors">
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="font-medium text-slate-900">{{ $product->ProductName }}</div>
-                                <div class="text-xs text-slate-500">₱{{ number_format($product->Price, 2) }} / unit</div>
+                                <div class="font-medium text-stone-900">{{ $product->ProductName }}</div>
+                                <div class="text-xs text-stone-500">₱{{ number_format($product->Price, 2) }} / unit</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-semibold text-slate-700">{{ $product->Quantity }} <span
-                                        class="text-xs font-normal text-slate-500">units</span></div>
+                                <div class="text-sm font-semibold text-stone-700">{{ $product->Quantity }} <span
+                                        class="text-xs font-normal text-stone-500">units</span></div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @if($product->Quantity <= $product->LowStockThreshold)

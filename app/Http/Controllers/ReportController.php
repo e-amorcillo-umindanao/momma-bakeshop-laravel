@@ -33,7 +33,7 @@ class ReportController extends Controller
             ->get();
 
         // Get top selling products
-        $topProducts = SoldProduct::join('Sales', 'SoldProducts.SaleID', '=', 'Sales.ID')
+        $topProducts = SoldProduct::join('Sales', 'SoldProducts.SalesID', '=', 'Sales.ID')
             ->join('Products', 'SoldProducts.ProductID', '=', 'Products.ID')
             ->whereBetween(DB::raw('DATE(Sales.DateAdded)'), [$startDate, $endDate])
             ->select('Products.ProductName', DB::raw('SUM(SoldProducts.Quantity) as total_sold'))

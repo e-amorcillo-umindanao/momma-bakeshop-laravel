@@ -1,6 +1,6 @@
-@extends('layouts.app')
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
     <div class="max-w-7xl mx-auto">
         <!-- Header & Filters -->
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
@@ -9,17 +9,17 @@
                 <p class="text-sm text-slate-500 mt-1">Comprehensive overview of revenue and top products.</p>
             </div>
 
-            <form method="GET" action="{{ route('reports.sales') }}"
+            <form method="GET" action="<?php echo e(route('reports.sales')); ?>"
                 class="flex items-end gap-3 bg-white p-3 rounded-xl shadow-sm border border-slate-200">
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Start
                         Date</label>
-                    <input type="date" name="start_date" value="{{ $startDate }}" required
+                    <input type="date" name="start_date" value="<?php echo e($startDate); ?>" required
                         class="block w-full text-sm border-slate-200 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">End Date</label>
-                    <input type="date" name="end_date" value="{{ $endDate }}" required
+                    <input type="date" name="end_date" value="<?php echo e($endDate); ?>" required
                         class="block w-full text-sm border-slate-200 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50">
                 </div>
                 <button type="submit"
@@ -52,16 +52,18 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-slate-100">
-                            @forelse($dailySales as $sale)
+                            <?php $__empty_1 = true; $__currentLoopData = $dailySales; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sale): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                                 <tr class="hover:bg-slate-50 transition-colors">
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">
-                                        {{ \Carbon\Carbon::parse($sale->date)->format('M d, Y') }}
+                                        <?php echo e(\Carbon\Carbon::parse($sale->date)->format('M d, Y')); ?>
+
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-indigo-600 text-right">
-                                        ₱{{ number_format($sale->total, 2) }}
+                                        ₱<?php echo e(number_format($sale->total, 2)); ?>
+
                                     </td>
                                 </tr>
-                            @empty
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                                 <tr>
                                     <td colspan="2" class="px-6 py-12 text-center text-sm text-slate-500 bg-slate-50/50">
                                         <svg class="mx-auto h-12 w-12 text-slate-300 mb-3" fill="none" viewBox="0 0 24 24"
@@ -72,18 +74,19 @@
                                         No sales records found for this period.
                                     </td>
                                 </tr>
-                            @endforelse
+                            <?php endif; ?>
                         </tbody>
-                        @if($dailySales->isNotEmpty())
+                        <?php if($dailySales->isNotEmpty()): ?>
                             <tfoot class="bg-slate-50 border-t border-slate-200">
                                 <tr>
                                     <td class="px-6 py-4 text-sm font-bold text-slate-700 text-right">Grand Total:</td>
                                     <td class="px-6 py-4 text-base font-black text-indigo-700 text-right">
-                                        ₱{{ number_format($dailySales->sum('total'), 2) }}
+                                        ₱<?php echo e(number_format($dailySales->sum('total'), 2)); ?>
+
                                     </td>
                                 </tr>
                             </tfoot>
-                        @endif
+                        <?php endif; ?>
                     </table>
                 </div>
             </div>
@@ -95,38 +98,40 @@
                     <span class="bg-indigo-100 text-indigo-700 text-xs font-bold px-2 py-0.5 rounded-full">By Volume</span>
                 </div>
                 <div class="p-4 flex-1">
-                    @if($topProducts->isEmpty())
+                    <?php if($topProducts->isEmpty()): ?>
                         <div class="h-full flex flex-col items-center justify-center text-slate-400 py-8 text-sm">
                             No products sold.
                         </div>
-                    @else
+                    <?php else: ?>
                         <ul class="space-y-3">
-                            @foreach($topProducts as $index => $item)
+                            <?php $__currentLoopData = $topProducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <li
                                     class="flex items-center p-3 rounded-xl border border-slate-100 bg-slate-50/50 hover:bg-white hover:shadow-sm transition-all group">
                                     <div class="flex-shrink-0 mr-4">
                                         <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold
-                                                        @if($index == 0) bg-amber-100 text-amber-700 border border-amber-200
-                                                        @elseif($index == 1) bg-slate-200 text-slate-600 border border-slate-300
-                                                        @elseif($index == 2) bg-amber-50 text-amber-800 border border-amber-100
-                                                        @else bg-slate-100 text-slate-500 border border-slate-200
-                                                        @endif">
-                                            #{{ $index + 1 }}
+                                                        <?php if($index == 0): ?> bg-amber-100 text-amber-700 border border-amber-200
+                                                        <?php elseif($index == 1): ?> bg-slate-200 text-slate-600 border border-slate-300
+                                                        <?php elseif($index == 2): ?> bg-amber-50 text-amber-800 border border-amber-100
+                                                        <?php else: ?> bg-slate-100 text-slate-500 border border-slate-200
+                                                        <?php endif; ?>">
+                                            #<?php echo e($index + 1); ?>
+
                                         </div>
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-bold text-slate-800 truncate">{{ $item->ProductName }}</p>
+                                        <p class="text-sm font-bold text-slate-800 truncate"><?php echo e($item->ProductName); ?></p>
                                         <p class="text-xs text-slate-500 font-medium mt-0.5 uppercase tracking-wider">Unit Sales</p>
                                     </div>
                                     <div class="text-right">
-                                        <div class="text-lg font-black text-indigo-600">{{ $item->total_sold }}</div>
+                                        <div class="text-lg font-black text-indigo-600"><?php echo e($item->total_sold); ?></div>
                                     </div>
                                 </li>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </ul>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Evan\OneDrive\Desktop\IT12 Project\MommasBakeshop\resources\views/reports/sales.blade.php ENDPATH**/ ?>

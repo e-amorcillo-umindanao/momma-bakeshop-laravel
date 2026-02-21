@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
 
-    <title><?php echo e(config('app.name', 'Warehouse Management System')); ?></title>
+    <title><?php echo e(config('app.name', "Momma's Bakeshop")); ?></title>
 
     <!-- Tailwind CSS (via CDN for prototype, compile via Vite in production) -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -47,11 +47,6 @@
                 <!-- User Profile & Notifications -->
                 <div class="flex items-center gap-5">
                     
-                    <!-- Notification Bell -->
-                    <?php
-                        // Fetch low stock products for notifications
-                        $lowStockProducts = \App\Models\Product::where('Quantity', '<=', 10)->get();
-                    ?>
                     <div class="relative" x-data="{ notifOpen: false }" @click.away="notifOpen = false">
                         <button @click="notifOpen = !notifOpen" class="relative p-2 text-stone-400 hover:text-stone-600 transition-colors focus:outline-none">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

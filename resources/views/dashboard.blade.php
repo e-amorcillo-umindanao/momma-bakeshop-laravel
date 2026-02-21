@@ -138,14 +138,46 @@
                     <a href="{{ route('reports.inventory') }}"
                         class="text-sm font-medium text-orange-600 hover:text-orange-700">View All Logs &rarr;</a>
                 </div>
-                <div class="px-6 py-12 text-center text-sm text-stone-500 flex flex-col items-center">
-                    <div class="h-10 w-10 bg-stone-100 rounded-full flex items-center justify-center mb-3">
-                        <svg class="h-5 w-5 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                    Activity feed placeholder. Link this to the Audit Logs table for production.
+                <div class="max-h-96 overflow-y-auto divide-y divide-stone-100">
+                    @if(isset($recentAudits) && $recentAudits->count() > 0)
+                        @foreach($recentAudits as $audit)
+                            <div class="px-6 py-3 flex items-start gap-3 hover:bg-stone-50/50 transition-colors">
+                                <div class="flex-shrink-0 mt-0.5">
+                                    <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold
+                                                    @if($audit->Action === 'INSERT') bg-emerald-50 text-emerald-600 border border-emerald-200
+                                                    @elseif($audit->Action === 'UPDATE') bg-sky-50 text-sky-600 border border-sky-200
+                                                    @elseif($audit->Action === 'DELETE') bg-rose-50 text-rose-600 border border-rose-200
+                                                    @elseif($audit->Action === 'LOGIN') bg-indigo-50 text-indigo-600 border border-indigo-200
+                                                    @elseif($audit->Action === 'LOGOUT') bg-amber-50 text-amber-600 border border-amber-200
+                                                    @else bg-stone-50 text-stone-600 border border-stone-200
+                                                    @endif">
+                                        {{ strtoupper(substr($audit->Action, 0, 1)) }}
+                                    </div>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm text-stone-800">
+                                        <span class="font-semibold">{{ $audit->user->FullName ?? 'System' }}</span>
+                                        <span class="text-stone-500">performed</span>
+                                        <span class="font-medium text-stone-700">{{ $audit->Action }}</span>
+                                        <span class="text-stone-500">on</span>
+                                        <span class="font-medium text-stone-700">{{ $audit->TableEdited }}</span>
+                                    </p>
+                                    <p class="text-xs text-stone-400 mt-0.5">
+                                        {{ \Carbon\Carbon::parse($audit->DateAdded)->diffForHumans() }}</p>
+                                </div>
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="px-6 py-12 text-center text-sm text-stone-500 flex flex-col items-center">
+                            <div class="h-10 w-10 bg-stone-100 rounded-full flex items-center justify-center mb-3">
+                                <svg class="h-5 w-5 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            No recent activity to show.
+                        </div>
+                    @endif
                 </div>
             </div>
         @endif

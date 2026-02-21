@@ -16,13 +16,8 @@ class CheckRole
 
         $user = Auth::user();
 
-        // Check if user role is in the allowed roles array
-        if (in_array($user->Role, $roles)) {
-            return $next($request);
-        }
-
-        // Specific inheritance for Owner/Admin
-        if ($user->Role === 'Owner/Admin') {
+        // Owner/Admin has access to all routes, plus check if user role is in the allowed list
+        if ($user->Role === 'Owner/Admin' || in_array($user->Role, $roles)) {
             return $next($request);
         }
 

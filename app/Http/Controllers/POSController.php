@@ -5,24 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Sale;
 use App\Models\SoldProduct;
-use App\Models\Audit;
+use App\Traits\HasAuditLogging;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class POSController extends Controller
 {
-    private function logAudit($tableEdited, $action, $previousChanges, $savedChanges)
-    {
-        Audit::create([
-            'UserID' => Auth::id(),
-            'TableEdited' => $tableEdited,
-            'PreviousChanges' => $previousChanges ? json_encode($previousChanges) : null,
-            'SavedChanges' => $savedChanges ? json_encode($savedChanges) : null,
-            'Action' => $action,
-            'DateAdded' => now(),
-        ]);
-    }
+    use HasAuditLogging;
 
     public function index()
     {
@@ -33,11 +23,19 @@ class POSController extends Controller
 
     public function checkout(Request $request)
     {
-        $validated = $request->validate([
+        $rules = [
             'cart' => 'required|string', // JSON string from frontend
             'transaction_type' => 'required|in:Walk-in,B2B',
-            'amount_tendered' => 'required|numeric|min:0',
-        ]);
+        ];
+
+        // Only require amount_tendered for Walk-in transactions (Bug #7)
+        if ($request->input('transaction_type') === 'Walk-in') {
+            $rules['amount_tendered'] = 'required|numeric|min:0';
+        } else {
+            $rules['amount_tendered'] = 'nullable|numeric|min:0';
+        }
+
+        $validated = $request->validate($rules);
 
         $cart = json_decode($validated['cart'], true);
 
@@ -59,21 +57,25 @@ class POSController extends Controller
                 $totalAmount += ($product->Price * $item['quantity']);
             }
 
-            if ($validated['amount_tendered'] < $totalAmount) {
+            $amountTendered = $validated['amount_tendered'] ?? 0;
+            $isB2B = $validated['transaction_type'] === 'B2B';
+
+            // For Walk-in, verify amount tendered covers total
+            if (!$isB2B && $amountTendered < $totalAmount) {
                 throw new \Exception("Amount tendered is less than the total amount due.");
             }
 
-            $change = $validated['amount_tendered'] - $totalAmount;
+            $change = $isB2B ? 0 : ($amountTendered - $totalAmount);
 
             // 1. Create the Sale Record
             $sale = Sale::create([
                 'UserID' => Auth::id(),
-                'B2BClientID' => null, // Handle B2B specifically later if needed
+                'B2BClientID' => null, // Can be linked to a B2B client picker in the future
                 'TransactionType' => $validated['transaction_type'],
                 'TotalAmount' => $totalAmount,
-                'AmountTendered' => $validated['amount_tendered'],
-                'Change' => $change,
-                'PaymentStatus' => 'Paid',
+                'AmountTendered' => $isB2B ? null : $amountTendered,
+                'Change' => $isB2B ? null : $change,
+                'PaymentStatus' => $isB2B ? 'Pending' : 'Paid',
                 'DateAdded' => now(),
             ]);
 
@@ -89,10 +91,10 @@ class POSController extends Controller
 
                 // Record Sold Product
                 SoldProduct::create([
-                    'SaleID' => $sale->ID,
+                    'SalesID' => $sale->ID,
                     'ProductID' => $product->ID,
                     'Quantity' => $item['quantity'],
-                    'Subtotal' => $product->Price * $item['quantity'],
+                    'SubAmount' => $product->Price * $item['quantity'],
                     'DateAdded' => now(),
                 ]);
 
@@ -105,7 +107,11 @@ class POSController extends Controller
 
             DB::commit();
 
-            return redirect()->route('pos.index')->with('success', "Sale successful! Change: ₱" . number_format($change, 2));
+            $successMessage = $isB2B
+                ? "B2B order recorded successfully! Total: ₱" . number_format($totalAmount, 2) . " (Payment Pending)"
+                : "Sale successful! Change: ₱" . number_format($change, 2);
+
+            return redirect()->route('pos.index')->with('success', $successMessage);
 
         } catch (\Exception $e) {
             DB::rollBack();

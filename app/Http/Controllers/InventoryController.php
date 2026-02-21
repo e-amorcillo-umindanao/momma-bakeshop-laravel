@@ -5,23 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Inventory;
 use App\Models\Product;
 use App\Models\StockMovement;
-use App\Models\Audit;
+use App\Traits\HasAuditLogging;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class InventoryController extends Controller
 {
-    private function logAudit($tableEdited, $action, $previousChanges, $savedChanges)
-    {
-        Audit::create([
-            'UserID' => Auth::id(),
-            'TableEdited' => $tableEdited,
-            'PreviousChanges' => $previousChanges ? json_encode($previousChanges) : null,
-            'SavedChanges' => $savedChanges ? json_encode($savedChanges) : null,
-            'Action' => $action,
-            'DateAdded' => now(),
-        ]);
-    }
+    use HasAuditLogging;
+
 
     public function index()
     {

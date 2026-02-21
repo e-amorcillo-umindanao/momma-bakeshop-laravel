@@ -3,25 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Audit;
+use App\Traits\HasAuditLogging;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
-    // Helper function to log audit
-    private function logAudit($tableEdited, $action, $previousChanges, $savedChanges)
-    {
-        Audit::create([
-            'UserID' => Auth::id(),
-            'TableEdited' => $tableEdited,
-            'PreviousChanges' => $previousChanges ? json_encode($previousChanges) : null,
-            'SavedChanges' => $savedChanges ? json_encode($savedChanges) : null,
-            'Action' => $action,
-            'DateAdded' => now(),
-        ]);
-    }
+    use HasAuditLogging;
 
     public function index()
     {
@@ -69,6 +59,7 @@ class UserController extends Controller
             'FullName' => 'required|string|max:255',
             'Username' => 'required|string|max:255|unique:Users,Username,' . $user->ID . ',ID',
             'Role' => 'required|string|in:Cashier,Inventory Clerk,Owner/Admin',
+            'Password' => 'nullable|string|min:6', // Bug #11: enforce min:6 on edit too
         ]);
 
         $previous = $user->toArray();
@@ -103,6 +94,11 @@ class UserController extends Controller
         $user->Status = $user->Status === 'Active' ? 'Inactive' : 'Active';
         $user->DateModified = now();
         $user->save();
+
+        // Bug #12: Invalidate all sessions for deactivated users
+        if ($user->Status === 'Inactive') {
+            DB::table('sessions')->where('user_id', $user->ID)->delete();
+        }
 
         $this->logAudit('Users', 'UPDATE', $previous, $user->toArray());
 

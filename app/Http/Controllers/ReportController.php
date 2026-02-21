@@ -15,7 +15,7 @@ class ReportController extends Controller
     {
         // Get quick summaries for the dashboard
         $todaySales = Sale::whereDate('DateAdded', today())->sum('TotalAmount');
-        $lowStockProducts = Product::where('Quantity', '<=', 10)->count(); // configurable threshold
+        $lowStockProducts = Product::whereColumn('Quantity', '<=', 'LowStockThreshold')->count();
 
         return view('reports.index', compact('todaySales', 'lowStockProducts'));
     }

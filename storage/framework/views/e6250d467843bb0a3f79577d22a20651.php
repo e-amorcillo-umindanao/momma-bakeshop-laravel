@@ -39,13 +39,18 @@
                                 class="relative bg-white border border-stone-200 rounded-xl p-4 text-left shadow-sm hover:shadow-md hover:border-orange-300 transition-all focus:outline-none focus:ring-2 focus:ring-orange-500 group overflow-hidden flex flex-col h-full transform hover:-transtone-y-0.5">
                                 <div
                                     class="w-full aspect-video bg-orange-50/50 rounded-lg mb-3 flex items-center justify-center text-orange-300 group-hover:bg-orange-100 group-hover:text-orange-500 transition-colors">
-                                    <svg class="w-10 h-10 transform group-hover:scale-110 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg class="w-10 h-10 transform group-hover:scale-110 transition-transform duration-300"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <!-- Bakery/Bread/Croissant Icon -->
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 21c-4.97 0-9-2.239-9-5V9.5C3 6.462 7.03 4 12 4s9 2.462 9 5.5V16c0 2.761-4.03 5-9 5z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 13.5c4.5 3 13.5 3 18 0" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                            d="M12 21c-4.97 0-9-2.239-9-5V9.5C3 6.462 7.03 4 12 4s9 2.462 9 5.5V16c0 2.761-4.03 5-9 5z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                            d="M3 13.5c4.5 3 13.5 3 18 0" />
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v4" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.5 5.5v3" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.5 5.5v3" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                            d="M8.5 5.5v3" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                            d="M15.5 5.5v3" />
                                     </svg>
                                 </div>
                                 <h3 class="text-sm font-bold text-stone-800 leading-tight mb-1" x-text="product.ProductName">
@@ -83,9 +88,8 @@
                     </svg>
                     Current Order
                 </h2>
-                <p class="text-xs text-stone-400 mt-1">Order #<span
-                        x-text="Math.floor(Math.random() * 900000) + 100000"></span> • <span
-                        x-text="new Date().toLocaleDateString()"></span></p>
+                <p class="text-xs text-stone-400 mt-1"><span
+                        x-text="new Date().toLocaleDateString() + ' — ' + new Date().toLocaleTimeString()"></span></p>
             </div>
 
             <!-- Cart Items (Scrollable) -->
@@ -115,8 +119,10 @@
                                 <div class="flex items-center bg-stone-100 rounded-lg p-0.5 border border-stone-200 mt-1">
                                     <button @click="updateQuantity(index, -1)"
                                         class="w-6 h-6 flex items-center justify-center text-stone-600 hover:bg-white hover:rounded-md hover:shadow-sm transition-all focus:outline-none">−</button>
-                                    <span class="w-8 text-center text-xs font-bold text-stone-800"
-                                        x-text="item.quantity"></span>
+                                    <input type="text" x-model.number="item.quantity" min="1"
+                                        @change="clampQuantity(index)"
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, ''); if(this.value === '0') this.value = '1';"
+                                        class="w-10 text-center text-xs font-bold text-stone-800 bg-transparent border-0 focus:ring-0 p-0 m-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
                                     <button @click="updateQuantity(index, 1)"
                                         class="w-6 h-6 flex items-center justify-center text-stone-600 hover:bg-white hover:rounded-md hover:shadow-sm transition-all focus:outline-none">+</button>
                                 </div>
@@ -147,14 +153,14 @@
                     <div class="grid grid-cols-2 gap-3 mb-4">
                         <div>
                             <label class="block text-xs font-semibold text-stone-600 mb-1">Type</label>
-                            <select name="transaction_type"
+                            <select name="transaction_type" x-model="transactionType"
                                 class="block w-full rounded-lg border-stone-300 py-2.5 px-3 text-sm focus:ring-orange-500 focus:border-orange-500 bg-stone-50 border transition-colors shadow-sm text-stone-700">
                                 <option value="Walk-in">Walk-in</option>
                                 <option value="B2B">B2B Order</option>
                             </select>
                         </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-stone-600 mb-1">Tender ₱</label>
+                        <div class="mb-4" x-show="transactionType === 'Walk-in'" x-transition>
+                            <label class="block text-sm font-medium text-stone-700 mb-1">Cash Given ₱</label>
                             <input type="number" name="amount_tendered" x-model="amountTendered" min="0" step="0.01"
                                 class="block w-full rounded-lg border-stone-300 py-2.5 px-3 text-sm focus:ring-orange-500 focus:border-orange-500 bg-stone-50 border transition-colors shadow-sm font-bold text-stone-800"
                                 placeholder="0.00" required>
@@ -184,6 +190,7 @@
                 searchQuery: '',
                 cart: [],
                 amountTendered: '',
+                transactionType: 'Walk-in',
 
                 get filteredProducts() {
                     if (this.searchQuery === '') return this.products;
@@ -228,16 +235,29 @@
                     }
                 },
 
+                clampQuantity(index) {
+                    let item = this.cart[index];
+                    if (item.quantity > item.max) {
+                        item.quantity = item.max;
+                        alert('Quantity clamped to maximum available stock (' + item.max + ').');
+                    }
+                    if (item.quantity <= 0 || isNaN(item.quantity)) {
+                        this.cart.splice(index, 1);
+                    }
+                },
+
                 processCheckout(e) {
                     if (this.cart.length === 0) {
                         e.preventDefault();
                         return alert("Cart is empty!");
                     }
 
-                    let tendered = parseFloat(this.amountTendered);
-                    if (!tendered || tendered < this.cartTotal) {
-                        e.preventDefault();
-                        return alert("Amount tendered must be greater than or equal to the total amount.");
+                    if (this.transactionType === 'Walk-in') {
+                        let tendered = parseFloat(this.amountTendered);
+                        if (!tendered || tendered < this.cartTotal) {
+                            e.preventDefault();
+                            return alert("Amount tendered must be greater than or equal to the total amount.");
+                        }
                     }
                     // Form submits naturally
                 }

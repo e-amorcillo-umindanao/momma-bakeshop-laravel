@@ -4,23 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\ProductionBatch;
-use App\Models\Audit;
+use App\Traits\HasAuditLogging;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ProductionBatchController extends Controller
 {
-    private function logAudit($tableEdited, $action, $previousChanges, $savedChanges)
-    {
-        Audit::create([
-            'UserID' => Auth::id(),
-            'TableEdited' => $tableEdited,
-            'PreviousChanges' => $previousChanges ? json_encode($previousChanges) : null,
-            'SavedChanges' => $savedChanges ? json_encode($savedChanges) : null,
-            'Action' => $action,
-            'DateAdded' => now(),
-        ]);
-    }
+    use HasAuditLogging;
 
     public function create()
     {
@@ -36,27 +27,37 @@ class ProductionBatchController extends Controller
             'ProductionDate' => 'required|date',
         ]);
 
-        // Generate the Production Batch record
-        $batch = ProductionBatch::create([
-            'ProductID' => $validated['ProductID'],
-            'UserID' => Auth::id(),
-            'QuantityProduced' => $validated['QuantityProduced'],
-            'ProductionDate' => $validated['ProductionDate'],
-            'DateAdded' => now(),
-        ]);
+        DB::beginTransaction();
 
-        // Increase product inventory
-        $product = Product::findOrFail($validated['ProductID']);
-        $previous = $product->toArray();
+        try {
+            // Generate the Production Batch record
+            $batch = ProductionBatch::create([
+                'ProductID' => $validated['ProductID'],
+                'UserID' => Auth::id(),
+                'QuantityProduced' => $validated['QuantityProduced'],
+                'ProductionDate' => $validated['ProductionDate'],
+                'DateAdded' => now(),
+            ]);
 
-        $product->Quantity += $validated['QuantityProduced'];
-        $product->DateModified = now();
-        $product->save();
+            // Increase product inventory
+            $product = Product::findOrFail($validated['ProductID']);
+            $previous = $product->toArray();
 
-        // Log Audits
-        $this->logAudit('ProductionBatches', 'INSERT', null, $batch->toArray());
-        $this->logAudit('Products', 'UPDATE', $previous, $product->toArray());
+            $product->Quantity += $validated['QuantityProduced'];
+            $product->DateModified = now();
+            $product->save();
 
-        return redirect()->route('inventory.index')->with('success', 'Production batch recorded successfully.');
+            // Log Audits
+            $this->logAudit('ProductionBatches', 'INSERT', null, $batch->toArray());
+            $this->logAudit('Products', 'UPDATE', $previous, $product->toArray());
+
+            DB::commit();
+
+            return redirect()->route('inventory.index')->with('success', 'Production batch recorded successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Failed to record production batch: ' . $e->getMessage());
+        }
     }
 }
+

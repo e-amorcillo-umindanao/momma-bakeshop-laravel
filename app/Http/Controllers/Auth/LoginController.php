@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Audit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,9 +24,16 @@ class LoginController extends Controller
         // Laravel expects 'password' key for auth attempt
         if (Auth::attempt(['Username' => $credentials['Username'], 'password' => $credentials['Password'], 'Status' => 'Active'])) {
             $request->session()->regenerate();
-            
-            // Log the login audit here (to be added fully later)
-            // \App\Models\Audit::create([...]);
+
+            // Log the login audit
+            Audit::create([
+                'UserID' => Auth::id(),
+                'TableEdited' => 'Users',
+                'PreviousChanges' => null,
+                'SavedChanges' => json_encode(['event' => 'LOGIN', 'Username' => $credentials['Username']]),
+                'Action' => 'LOGIN',
+                'DateAdded' => now(),
+            ]);
 
             return redirect()->intended('/');
         }
@@ -37,6 +45,18 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
+        // Log the logout audit before destroying the session
+        if (Auth::check()) {
+            Audit::create([
+                'UserID' => Auth::id(),
+                'TableEdited' => 'Users',
+                'PreviousChanges' => null,
+                'SavedChanges' => json_encode(['event' => 'LOGOUT', 'Username' => Auth::user()->Username]),
+                'Action' => 'LOGOUT',
+                'DateAdded' => now(),
+            ]);
+        }
+
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

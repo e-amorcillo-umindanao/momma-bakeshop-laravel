@@ -21,7 +21,7 @@
         [x-cloak] { display: none !important; }
     </style>
 </head>
-<body class="h-full antialiased font-sans text-slate-800" x-data="{ sidebarOpen: true }">
+<body class="h-full antialiased font-sans text-slate-800" x-data="{ sidebarOpen: false }">
     <div class="flex h-screen overflow-hidden bg-slate-50">
         
         <!-- Sidebar Component -->

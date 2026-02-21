@@ -1,6 +1,6 @@
 <aside
     class="bg-slate-900 border-r border-slate-800 flex flex-col transition-all duration-300 ease-in-out shrink-0 relative shadow-xl z-20"
-    :class="sidebarOpen ? 'w-64' : 'w-20'">
+    :class="sidebarOpen ? 'w-64' : 'w-20'" @mouseenter="sidebarOpen = true" @mouseleave="sidebarOpen = false">
 
     <!-- Branding Header -->
     <div class="h-16 flex items-center justify-center border-b border-white/10 px-4 shrink-0 overflow-hidden relative">
@@ -131,7 +131,8 @@
         <div class="ml-3 transition-all duration-300 overflow-hidden"
             :class="sidebarOpen ? 'w-auto opacity-100' : 'w-0 opacity-0 absolute pointer-events-none'">
             <p class="text-xs font-medium text-white truncate max-w-[130px]">
-                {{ auth()->check() ? auth()->user()->FullName : 'Admin User' }}</p>
+                {{ auth()->check() ? auth()->user()->FullName : 'Admin User' }}
+            </p>
             <p class="text-[10px] text-slate-400 truncate">{{ auth()->check() ? auth()->user()->Role : 'System Admin' }}
             </p>
         </div>

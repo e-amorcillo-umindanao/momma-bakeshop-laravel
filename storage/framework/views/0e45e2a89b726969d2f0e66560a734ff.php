@@ -140,21 +140,5 @@
         <?php endif; ?>
     </div>
 
-    <!-- User Footer Snippet (Optional context menu point) -->
-    <div class="p-4 border-t border-white/5 flex items-center shrink-0">
-        <div class="h-8 w-8 rounded-md bg-orange-500 flex items-center justify-center shrink-0 shadow-sm">
-            <span
-                class="text-white text-xs font-bold"><?php echo e(substr(auth()->check() ? auth()->user()->FullName : 'A', 0, 1)); ?></span>
-        </div>
-        <div class="ml-3 transition-all duration-150 overflow-hidden"
-            :class="sidebarOpen ? 'w-auto opacity-100' : 'w-0 opacity-0 absolute pointer-events-none'">
-            <p class="text-xs font-medium text-white truncate max-w-[130px]">
-                <?php echo e(auth()->check() ? auth()->user()->FullName : 'Admin User'); ?>
-
-            </p>
-            <p class="text-[10px] text-stone-400 truncate"><?php echo e(auth()->check() ? auth()->user()->Role : 'System Admin'); ?>
-
-            </p>
-        </div>
-    </div>
+    <!-- User Footer Snippet Removed -->
 </aside><?php /**PATH C:\Users\Evan\OneDrive\Desktop\IT12 Project\MommasBakeshop\resources\views/components/sidebar.blade.php ENDPATH**/ ?>

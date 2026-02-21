@@ -41,17 +41,7 @@
                         </svg>
                     </button>
                     
-                    <!-- Global Search -->
-                    <div class="relative hidden sm:block">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            <svg class="w-4 h-4 text-stone-400" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                            </svg>
-                        </span>
-                        <input type="text" 
-                               class="w-72 pl-10 pr-4 py-2 bg-stone-50 border border-stone-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all placeholder-stone-400" 
-                               placeholder="Search IMS Data (IMEI, Users)...">
-                    </div>
+                    <!-- Global Search (Removed) -->
                 </div>
 
                 <!-- User Profile & Notifications -->
@@ -141,7 +131,7 @@
                     <!-- Profile Dropdown -->
                     <div class="relative" x-data="{ profileOpen: false }" @click.away="profileOpen = false">
                         <button @click="profileOpen = !profileOpen" class="flex items-center gap-3 focus:outline-none">
-                            <img class="h-8 w-8 rounded-full object-cover border border-stone-200 shadow-sm" src="https://ui-avatars.com/api/?name={{ urlencode(auth()->check() ? auth()->user()->FullName : 'Admin User') }}&background=4f46e5&color=fff" alt="User Avatar">
+                            <img class="h-8 w-8 rounded-full object-cover border border-stone-200 shadow-sm" src="https://ui-avatars.com/api/?name={{ urlencode(auth()->check() ? auth()->user()->FullName : 'Admin User') }}&background=f97316&color=fff" alt="User Avatar">
                             <div class="hidden md:flex flex-col text-left">
                                 <span class="text-sm font-semibold text-stone-700 leading-tight">{{ auth()->check() ? auth()->user()->FullName : 'Admin User' }}</span>
                                 <span class="text-xs text-stone-500 font-medium">{{ auth()->check() ? auth()->user()->Role : 'System Admin' }}</span>

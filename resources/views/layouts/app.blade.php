@@ -58,15 +58,83 @@
                 <div class="flex items-center gap-5">
                     
                     <!-- Notification Bell -->
-                    <button class="relative p-2 text-slate-400 hover:text-slate-600 transition-colors">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-                        </svg>
-                        <span class="absolute top-1.5 right-1.5 flex h-2 w-2">
-                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500 shadow-sm shadow-red-500/50"></span>
-                        </span>
-                    </button>
+                    @php
+                        // Fetch low stock products for notifications
+                        $lowStockProducts = \App\Models\Product::where('Quantity', '<=', 10)->get();
+                    @endphp
+                    <div class="relative" x-data="{ notifOpen: false }" @click.away="notifOpen = false">
+                        <button @click="notifOpen = !notifOpen" class="relative p-2 text-slate-400 hover:text-slate-600 transition-colors focus:outline-none">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                            </svg>
+                            @if($lowStockProducts->count() > 0)
+                            <span class="absolute top-2 right-2.5 flex h-2 w-2">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500 shadow-sm shadow-red-500/50"></span>
+                            </span>
+                            @endif
+                        </button>
+                        
+                        <!-- Notification Dropdown -->
+                        <div x-show="notifOpen" 
+                             x-transition:enter="transition ease-out duration-100"
+                             x-transition:enter-start="transform opacity-0 scale-95"
+                             x-transition:enter-end="transform opacity-100 scale-100"
+                             x-transition:leave="transition ease-in duration-75"
+                             x-transition:leave-start="transform opacity-100 scale-100"
+                             x-transition:leave-end="transform opacity-0 scale-95"
+                             x-cloak 
+                             class="absolute right-0 mt-3 w-80 bg-white rounded-lg shadow-lg border border-slate-100 z-50 overflow-hidden ring-1 ring-black ring-opacity-5">
+                            
+                            <div class="px-4 py-3 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
+                                <h3 class="text-sm font-bold text-slate-800">Notifications</h3>
+                                @if($lowStockProducts->count() > 0)
+                                <span class="bg-red-100 text-red-700 text-xs font-bold px-2 py-0.5 rounded-full">{{ $lowStockProducts->count() }} new</span>
+                                @endif
+                            </div>
+                            
+                            <div class="max-h-80 overflow-y-auto">
+                                @if($lowStockProducts->count() > 0)
+                                    <div class="divide-y divide-slate-100">
+                                        @foreach($lowStockProducts as $product)
+                                        <a href="{{ route('inventory.index') }}" class="block px-4 py-3 hover:bg-slate-50 transition-colors group">
+                                            <div class="flex items-start gap-3">
+                                                <div class="flex-shrink-0 mt-0.5">
+                                                    <div class="w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center border border-amber-200">
+                                                        <svg class="w-4 h-4 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <p class="text-sm font-medium text-slate-800 group-hover:text-amber-700 transition-colors">Low Stock Alert</p>
+                                                    <p class="text-xs text-slate-500 mt-0.5"><span class="font-semibold text-slate-700">{{ $product->ProductName }}</span> is running low ({{ $product->Quantity }} remaining).</p>
+                                                    <p class="text-[10px] text-slate-400 mt-1 uppercase tracking-wider">{{ \Carbon\Carbon::now()->diffForHumans() }}</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <div class="px-4 py-8 text-center bg-white flex flex-col items-center justify-center">
+                                        <div class="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center mb-3">
+                                            <svg class="w-6 h-6 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                                            </svg>
+                                        </div>
+                                        <p class="text-sm font-medium text-slate-500">You're all caught up!</p>
+                                        <p class="text-xs text-slate-400 mt-1">No new notifications to show.</p>
+                                    </div>
+                                @endif
+                            </div>
+                            
+                            @if($lowStockProducts->count() > 0)
+                            <div class="px-4 py-2 bg-slate-50 border-t border-slate-100">
+                                <a href="{{ route('inventory.index') }}" class="block text-center text-xs font-semibold text-indigo-600 hover:text-indigo-700 transition-colors">View Inventory</a>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
                     
                     <div class="h-6 w-px bg-slate-200"></div>
 

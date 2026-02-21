@@ -1,6 +1,6 @@
-@extends('layouts.app')
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
     <div class="max-w-2xl mx-auto mt-8">
         <!-- Header -->
         <div class="mb-8">
@@ -10,8 +10,8 @@
 
         <!-- Form Card -->
         <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-            <form action="{{ route('production.store') }}" method="POST" class="p-6 md:p-8">
-                @csrf
+            <form action="<?php echo e(route('production.store')); ?>" method="POST" class="p-6 md:p-8">
+                <?php echo csrf_field(); ?>
 
                 <div class="space-y-6">
                     <!-- Product Selection -->
@@ -20,10 +20,10 @@
                         <select name="ProductID" required
                             class="block w-full rounded-xl border-slate-300 py-3 px-4 text-sm focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 border transition-colors shadow-sm text-slate-700">
                             <option value="">Select Product...</option>
-                            @foreach($products as $product)
-                                <option value="{{ $product->ID }}">{{ $product->ProductName }} - Current Stock:
-                                    {{ $product->Quantity }}</option>
-                            @endforeach
+                            <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($product->ID); ?>"><?php echo e($product->ProductName); ?> - Current Stock:
+                                    <?php echo e($product->Quantity); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </select>
                     </div>
 
@@ -38,14 +38,14 @@
                     <!-- Date & Time -->
                     <div>
                         <label class="block text-sm font-semibold text-slate-700 mb-2">Date & Time of Production</label>
-                        <input type="datetime-local" name="ProductionDate" required value="{{ date('Y-m-d\TH:i') }}"
+                        <input type="datetime-local" name="ProductionDate" required value="<?php echo e(date('Y-m-d\TH:i')); ?>"
                             class="block w-full rounded-xl border-slate-300 py-3 px-4 text-sm focus:ring-indigo-500 focus:border-indigo-500 bg-slate-50 border transition-colors shadow-sm text-slate-700">
                     </div>
                 </div>
 
                 <!-- Footer Actions -->
                 <div class="mt-8 pt-6 border-t border-slate-100 flex items-center justify-end gap-4">
-                    <a href="{{ route('inventory.index') }}"
+                    <a href="<?php echo e(route('inventory.index')); ?>"
                         class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-slate-900 bg-white border border-slate-200 rounded-xl shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-200 transition-all">
                         Cancel
                     </a>
@@ -61,4 +61,5 @@
             </form>
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Evan\OneDrive\Desktop\IT12 Project\MommasBakeshop\resources\views/production/create.blade.php ENDPATH**/ ?>

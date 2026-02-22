@@ -1,6 +1,6 @@
-@extends('layouts.app')
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
     <div class="max-w-4xl mx-auto">
 
         <div class="mb-8">
@@ -13,7 +13,7 @@
             <div class="px-6 py-8 sm:p-10 border-b border-stone-100 flex items-center gap-6">
                 <div class="relative">
                     <img class="h-24 w-24 rounded-full object-cover border-4 border-white shadow-md"
-                        src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->FullName) }}&background=ea580c&color=fff&size=150"
+                        src="https://ui-avatars.com/api/?name=<?php echo e(urlencode(auth()->user()->FullName)); ?>&background=ea580c&color=fff&size=150"
                         alt="Avatar">
                     <button type="button"
                         class="absolute bottom-0 right-0 bg-white rounded-full p-1.5 shadow-sm border border-stone-200 text-stone-500 hover:text-orange-600 transition-colors">
@@ -27,20 +27,21 @@
                     </button>
                 </div>
                 <div>
-                    <h2 class="text-xl font-bold text-stone-900">{{ auth()->user()->FullName }}</h2>
+                    <h2 class="text-xl font-bold text-stone-900"><?php echo e(auth()->user()->FullName); ?></h2>
                     <div class="flex items-center gap-2 mt-1">
                         <span
                             class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
-                            {{ auth()->user()->Status }}
+                            <?php echo e(auth()->user()->Status); ?>
+
                         </span>
                         <span
-                            class="text-sm text-stone-500 font-medium px-2 border-l border-stone-300">{{ auth()->user()->Role }}</span>
+                            class="text-sm text-stone-500 font-medium px-2 border-l border-stone-300"><?php echo e(auth()->user()->Role); ?></span>
                     </div>
                 </div>
             </div>
 
-            <form action="{{ route('profile.update') }}" method="POST" class="px-6 py-8 sm:p-10">
-                @csrf
+            <form action="<?php echo e(route('profile.update')); ?>" method="POST" class="px-6 py-8 sm:p-10">
+                <?php echo csrf_field(); ?>
 
                 <div class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
 
@@ -54,7 +55,7 @@
                         <label for="FullName" class="block text-sm font-medium text-stone-700">Full Name</label>
                         <div class="mt-1">
                             <input type="text" name="FullName" id="FullName"
-                                value="{{ old('FullName', auth()->user()->FullName) }}" required
+                                value="<?php echo e(old('FullName', auth()->user()->FullName)); ?>" required
                                 class="block w-full rounded-lg border-stone-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm bg-stone-50 py-2.5 px-3 border transition-colors hover:bg-white focus:bg-white text-stone-800">
                         </div>
                     </div>
@@ -66,7 +67,7 @@
                                 <span class="text-stone-400 sm:text-sm">@</span>
                             </div>
                             <input type="text" name="Username" id="Username"
-                                value="{{ old('Username', auth()->user()->Username) }}" required
+                                value="<?php echo e(old('Username', auth()->user()->Username)); ?>" required
                                 class="block w-full pl-8 rounded-lg border-stone-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 sm:text-sm bg-stone-50 py-2.5 px-3 border transition-colors hover:bg-white focus:bg-white text-stone-800">
                         </div>
                     </div>
@@ -101,7 +102,7 @@
 
                 <!-- Form Actions -->
                 <div class="mt-10 pt-6 border-t border-stone-100 flex items-center justify-end gap-x-4">
-                    <a href="{{ route('dashboard') }}"
+                    <a href="<?php echo e(route('dashboard')); ?>"
                         class="text-sm font-semibold leading-6 text-stone-600 hover:text-stone-900 transition-colors">Cancel</a>
                     <button type="submit"
                         class="rounded-lg bg-orange-600 px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-colors">
@@ -111,4 +112,5 @@
             </form>
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Evan\OneDrive\Desktop\IT12 Project\MommasBakeshop\resources\views\profile.blade.php ENDPATH**/ ?>
